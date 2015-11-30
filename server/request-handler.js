@@ -11,11 +11,12 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-
-var messages = JSON.stringify({results:[{username:'Festus', text:"hey man!",roomname:'lobby'}]});
+var request = require("request");
+var database = {results:[{username:'Festus', text:"hey man!",roomname:'lobby'},{username:'David', text:"hey jude!",roomname:'lobby'}]};
+var messages = JSON.stringify(database);
 
 var requestHandler = function(request, response) {
-  // Request and Response come from node's http module.
+ // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
   // headers and URL, and about the outgoing response, such as its status
@@ -55,6 +56,18 @@ var requestHandler = function(request, response) {
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
   response.end(messages);
+
+  //Post request
+
+
+  // console.log("Serving request type " + request.method + " for url " + request.url);
+  // var statusCode = 200;
+
+  // var headers = defaultCorsHeaders;
+  // headers['Content-Type'] = "application/json";
+  // response.writeHead(statusCode, headers);
+  // response.end("Post Successful");
+
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -72,5 +85,8 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
+
+
+
 
 module.exports = requestHandler;
