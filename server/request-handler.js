@@ -12,7 +12,7 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 
-var messages = JSON.stringify({David:"Hello Festus", Festus:"I am always"});
+var messages = JSON.stringify({results:[{username:'Festus', text:"hey man!",roomname:'lobby'}]});
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
