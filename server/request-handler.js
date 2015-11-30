@@ -12,6 +12,8 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 
+var messages = JSON.stringify({David:"Hello Festus", Festus:"I am always"});
+
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -39,7 +41,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "application/json";
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
@@ -52,7 +54,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end("Hello, World!");
+  response.end(messages);
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -71,3 +73,4 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 
+module.exports = requestHandler;

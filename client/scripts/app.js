@@ -64,9 +64,9 @@ $(function() {
           console.log('chatterbox: Messages fetched');
 
           // Don't bother if we have nothing to work with
-          if (!data.results || !data.results.length) { 
+          if (!data.results || !data.results.length) {
             app.stopSpinner();
-            return; 
+            return;
           }
 
           // Get the last message
