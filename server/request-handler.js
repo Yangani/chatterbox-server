@@ -13,7 +13,6 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 var request = require("request");
 var database = {results:[{username:'Festus', text:"hey man!",roomname:'lobby'},{username:'David', text:"hey jude!",roomname:'lobby'}]};
-var messages = JSON.stringify(database);
 
 var requestHandler = function(request, response) {
  // Request and Response come from node's http module.
@@ -30,7 +29,9 @@ var requestHandler = function(request, response) {
   // Adding more logging to your server can be an easy way to get passive
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
-  console.log("Serving request type " + request.method + " for url " + request.url);
+
+  //Get Request
+  /*console.log("Serving request type " + request.method + " for url " + request.url);
 
   // The outgoing status.
   var statusCode = 200;
@@ -55,18 +56,25 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(messages);
+  response.end(messages);*/
 
   //Post request
+if(request.method === 'POST'){
+  request.on("data", function(data) {
+    console.log("messages data: ", JSON.parse(data));
+    var input = JSON.parse(data);
+    database.results.push(input);
+  })
+}
 
+  console.log("Serving request type " + request.method + " for url " + request.url);
+  var statusCode = 201;
 
-  // console.log("Serving request type " + request.method + " for url " + request.url);
-  // var statusCode = 200;
-
-  // var headers = defaultCorsHeaders;
-  // headers['Content-Type'] = "application/json";
-  // response.writeHead(statusCode, headers);
-  // response.end("Post Successful");
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = "application/json";
+  response.writeHead(statusCode, headers);
+  var messages = JSON.stringify(database);
+  response.end(messages);
 
 };
 
