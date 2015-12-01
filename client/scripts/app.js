@@ -27,14 +27,14 @@ $(function() {
       app.$roomSelect.on('change', app.saveRoom);
 
       // Fetch previous messages
-      app.startSpinner();
+      //app.startSpinner();
       app.fetch(false);
 
       // Poll for new messages
-      setInterval(app.fetch, 3000);
+      //setInterval(app.fetch, 3000);
     },
     send: function(data) {
-      app.startSpinner();
+      //app.startSpinner();
       // Clear messages input
       app.$message.val('');
 
@@ -65,10 +65,10 @@ $(function() {
           console.log('data is', data);
 
           // Don't bother if we have nothing to work with
-          if (!data.results || !data.results.length) {
-            app.stopSpinner();
-            return;
-          }
+          // if (!data.results || !data.results.length) {
+          //   app.stopSpinner();
+          //   return;
+          // }
 
           // Get the last message
           var mostRecentMessage = data.results[data.results.length-1];
@@ -203,7 +203,7 @@ $(function() {
         }
       }
       else {
-        app.startSpinner();
+        //app.startSpinner();
         // Store as undefined for empty names
         app.roomname = app.$roomSelect.val();
 

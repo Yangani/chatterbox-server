@@ -11,7 +11,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var request = require("request");
+//var request = require("request");
 var statusCode = null;
 var headers = null;
 //var database = {results:[{username:'Festus', text:"hey man!",roomname:'lobby'},{username:'David', text:"hey jude!",roomname:'lobby'}]};
@@ -67,6 +67,9 @@ if(request.method === 'POST'){
   request.on("data", function(data) {
     console.log("messages data: ", JSON.parse(data));
     var input = JSON.parse(data);
+    if(input.roomname === null){
+      input.roomname = 'lobby';
+    }
     database.results.push(input);
     headers = defaultCorsHeaders;
     statusCode = 201;
@@ -75,26 +78,35 @@ if(request.method === 'POST'){
   })
 } else if(request.method === 'OPTIONS'){
   console.log("Serving request type " + request.method + " for url " + request.url);
-  var statusCode = 200;
+  statusCode = 200;
   //console.log(statusCode);
   headers = defaultCorsHeaders;
   //console.log(headers);
   response.writeHead(statusCode, headers);
   response.end();
-  console.log('OPTIONS request logic finished');
 } else if(request.method === 'GET'){
+  if (request.url === '/classes/messages'|| request.url ==='/classes/room') {
+    statusCode = 200;
+    var messages = JSON.stringify(database);
+  } else {
+    statusCode = 404;
+    messages = '';
+  }
   console.log("Serving request type " + request.method + " for url " + request.url);
-  console.log('Starting GET request logic');
-  var statusCode = 200;
   headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
   response.writeHead(statusCode, headers);
-  var messages = JSON.stringify(database);
-  console.log('Finishing GET request logic messages:', messages);
   response.end(messages);
-  console.log('Done with GET request logic');
-  console.log('GET logic runs');
-  }
+ }
+//  else if(request.method ==='GET' && request.url !== '/classes/messages'){
+//   console.log("Serving request type " + request.method + " for url " + request.url);
+//   statusCode = 404;
+//   headers = defaultCorsHeaders;
+//   headers['Content-Type'] = "application/json";
+//   response.writeHead(statusCode, headers);
+//   response.end();
+
+// }
 
 
 
