@@ -85,7 +85,7 @@ if(request.method === 'POST'){
   response.writeHead(statusCode, headers);
   response.end();
 } else if(request.method === 'GET'){
-  if (request.url === '/classes/messages'|| request.url ==='/classes/room') {
+  if (request.url === '/classes/messages'|| request.url ==='/classes/room1') {
     statusCode = 200;
     var messages = JSON.stringify(database);
   } else {
@@ -138,5 +138,4 @@ var defaultCorsHeaders = {
 
 
 
-
-module.exports = requestHandler;
+module.exports.requestHandler = requestHandler;
