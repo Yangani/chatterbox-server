@@ -12,7 +12,10 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var request = require("request");
-var database = {results:[{username:'Festus', text:"hey man!",roomname:'lobby'},{username:'David', text:"hey jude!",roomname:'lobby'}]};
+var statusCode = null;
+var headers = null;
+//var database = {results:[{username:'Festus', text:"hey man!",roomname:'lobby'},{username:'David', text:"hey jude!",roomname:'lobby'}]};
+var database = {results:[]};
 
 var requestHandler = function(request, response) {
  // Request and Response come from node's http module.
@@ -60,21 +63,48 @@ var requestHandler = function(request, response) {
 
   //Post request
 if(request.method === 'POST'){
+  console.log("Serving request type " + request.method + " for url " + request.url);
   request.on("data", function(data) {
     console.log("messages data: ", JSON.parse(data));
     var input = JSON.parse(data);
     database.results.push(input);
+    headers = defaultCorsHeaders;
+    statusCode = 201;
+    response.writeHead(statusCode,headers);
+    response.end(JSON.stringify("Message Submitted"));
   })
-}
-
+} else if(request.method === 'OPTIONS'){
   console.log("Serving request type " + request.method + " for url " + request.url);
-  var statusCode = 201;
-
-  var headers = defaultCorsHeaders;
+  var statusCode = 200;
+  //console.log(statusCode);
+  headers = defaultCorsHeaders;
+  //console.log(headers);
+  response.writeHead(statusCode, headers);
+  response.end();
+  console.log('OPTIONS request logic finished');
+} else if(request.method === 'GET'){
+  console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log('Starting GET request logic');
+  var statusCode = 200;
+  headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
   response.writeHead(statusCode, headers);
   var messages = JSON.stringify(database);
+  console.log('Finishing GET request logic messages:', messages);
   response.end(messages);
+  console.log('Done with GET request logic');
+  console.log('GET logic runs');
+  }
+
+
+
+  // var statusCode = 200;
+  // headers = defaultCorsHeaders;
+  // headers['Content-Type'] = "application/json";
+  // response.writeHead(statusCode, headers);
+  // var messages = JSON.stringify(database);
+  // response.end(messages);
+
 
 };
 
